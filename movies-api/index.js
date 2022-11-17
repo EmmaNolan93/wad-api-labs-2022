@@ -11,6 +11,7 @@ const port = process.env.PORT;
 
 app.use(bodyParser.json())
 app.use('/api/movies', moviesRouter);
+app.use('/api/', moviesRouter);
 
 app.listen(port, () => {
   console.info(`Server running at ${port}`);
