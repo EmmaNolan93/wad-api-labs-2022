@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "express-async-handler": "^1.2.0",
+    "express-session": "^1.17.3",
     "mongoose": "^6.7.3",
     "uniqid": "^5.4.0"
   }

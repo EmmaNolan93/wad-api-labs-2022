@@ -4,6 +4,8 @@ import bodyParser from 'body-parser';
 import moviesRouter from './api/movies';
 import usersRouter from './api/users/';
 import genresRouter from './api/genres/';
+import session from 'express-session';
+import authenticate from './api/authenticate';
 import './api/db';
 import './api/seedData';
 
@@ -20,9 +22,14 @@ const app = express();
 
 // eslint-disable-next-line no-undef
 const port = process.env.PORT;
-
+app.use(session({
+  secret: 'ilikecake',
+  resave: true,
+  saveUninitialized: true
+}));
 app.use(bodyParser.json());
-app.use('/api/movies', moviesRouter);
+//update /api/Movie route
+app.use('/api/movies', authenticate, moviesRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/genres', genresRouter);
 app.use(errHandler);

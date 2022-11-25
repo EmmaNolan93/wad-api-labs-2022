@@ -4,15 +4,12 @@ import { movies, movieReviews, movieDetails,genres } from './moviesData';
 
 const router = express.Router(); 
 
-router.get('/movies', (req, res) => {
+router.get('/', (req, res) => {
     res.json(movies);
 });
 
-router.get('/genres', (req, res) => {
-res.json(genres);
-});
 // Get movie details
-router.get('/movies/:id', (req, res) => {
+router.get('/:id', (req, res) => {
     const id = parseInt(req.params.id);
     if (movieDetails.id == id) {
         res.status(200).json(movieDetails);
@@ -24,7 +21,7 @@ router.get('/movies/:id', (req, res) => {
     }
 });
 // Get movie reviews
-router.get('/movies/:id/reviews', (req, res) => {
+router.get('/:id/reviews', (req, res) => {
     const id = parseInt(req.params.id);
     // find reviews in list
     if (movieReviews.id == id) {
@@ -37,7 +34,7 @@ router.get('/movies/:id/reviews', (req, res) => {
     }
 });
 //Post a movie review
-router.post('/movies/:id/reviews', (req, res) => {
+router.post('/:id/reviews', (req, res) => {
     const id = parseInt(req.params.id);
     if (movieReviews.id == id) {
         req.body.created_at = new Date();
