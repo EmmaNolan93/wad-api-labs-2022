@@ -1,5 +1,7 @@
 import express from 'express';
 import uniqid from 'uniqid';
+import './db';
+import './seedData';
 import { movies, movieReviews, movieDetails,genres } from './moviesData';
 
 const router = express.Router(); 
