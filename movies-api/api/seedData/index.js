@@ -1,6 +1,8 @@
-import userModel from '../api/users/userModel';
+import userModel from '../users/userModel';
 import users from './users';
 import dotenv from 'dotenv';
+
+
 
 dotenv.config();
 
