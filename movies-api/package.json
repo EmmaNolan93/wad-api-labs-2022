@@ -9,6 +9,7 @@
   "author": "EmmaNolan93",
   "license": "ISC",
   "dependencies": {
+    "express-async-handler": "^1.2.0",
     "mongoose": "^6.7.3",
     "uniqid": "^5.4.0"
   }

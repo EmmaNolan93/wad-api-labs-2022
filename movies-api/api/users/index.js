@@ -1,6 +1,6 @@
 import express from 'express';
 import User from './userModel';
-
+import asyncHandler from 'express-async-handler';
 const router = express.Router(); // eslint-disable-line
 
 // Get all users
@@ -10,13 +10,13 @@ router.get('/', async (req, res) => {
 });
 
 // register(Create)/Authenticate User
-router.post('/', async (req, res) => {
+router.post('/', asyncHandler(async (req, res) => {
     await User(req.body).save();
     res.status(201).json({
         code: 201,
         msg: 'Successful created new user.',
     });
-});
+}));
 router.post('/:id/favourites', async (req, res) => {
     const newFavourite = req.body;
     if (newFavourite && newFavourite.id) {
@@ -39,4 +39,5 @@ router.get('/:id/favourites', async (req, res) => {
         res.status(404).json({ code: 404, msg: 'Unable to find favourites' });
     }
 });
+
 export default router;
