@@ -2,7 +2,7 @@ import express from 'express';
 import uniqid from 'uniqid';
 import movieModel from './movieModel';
 import asyncHandler from 'express-async-handler';
-import { movies, movieReviews, movieDetails,genres } from './moviesData';
+import { movieReviews} from './moviesData';
 
 const router = express.Router(); 
 

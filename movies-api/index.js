@@ -4,13 +4,12 @@ import bodyParser from 'body-parser';
 import moviesRouter from './api/movies';
 import usersRouter from './api/users/';
 import genresRouter from './api/genres/';
-import session from 'express-session';
 import passport from './api/authenticate';
 import './api/db';
 import './api/seedData';
 
 dotenv.config();
-const errHandler = (err, req, res, next) => {
+const errHandler = (err, req, res) => {
   /* if the error in development then send stack trace to display whole error,
   if it's in production then just send error message  */
   if(process.env.NODE_ENV === 'production') {

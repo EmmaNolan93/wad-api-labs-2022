@@ -12,13 +12,19 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/',asyncHandler( async (req, res, next) => {
+    var val = new RegExp( /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/);
     if (!req.body.username || !req.body.password) {
       res.status(401).json({success: false, msg: 'Please pass username and password.'});
       return next();
     }
     if (req.query.action === 'register') {
+        if(val.test(req.body.password)){
       await User.create(req.body);
       res.status(201).json({code: 201, msg: 'Successful created new user.'});
+        }
+        else {
+            res.status(401).json({success: false, msg: "password needs to are at least 5 characters long and contain at least one number and one letter"})
+        }
     } else {
       const user = await User.findByUserName(req.body.username);
         if (!user) return res.status(401).json({ success: false, msg: 'Authentication failed. User not found.' });
