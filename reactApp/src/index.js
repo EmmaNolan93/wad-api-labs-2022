@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import SignUpPage from "./signUpPage";
 import { BrowserRouter, Route, Redirect, Switch, Link } from "react-router-dom";
 import { PublicPage, Movies, Profile, HomePage } from "./pages";
 import LoginPage from "./loginPage";
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="/public" component={PublicPage} />
           <Route exact path="/" component={HomePage} />
           <Route path="/login" component={LoginPage} />
+          <Route path="/signup" component={SignUpPage} />
           <PrivateRoute path="/movies" component={Movies} />
           <PrivateRoute path="/profile" component={Profile} />
           <Redirect from="*" to="/" />
