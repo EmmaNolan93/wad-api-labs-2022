@@ -1,5 +1,5 @@
 export const login = (username, password) => {
-    return fetch('/api/users', {
+    return fetch('http://localhost:8080/api/users', {
         headers: {
             'Content-Type': 'application/json'
         },
