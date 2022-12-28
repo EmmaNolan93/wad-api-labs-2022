@@ -8,7 +8,7 @@ const tvShowSchema = new Schema({
     created_by: [
       {
         id:{ type: Number, required: true, unique: true },
-        credit_id:  { type: Number, required: true, unique: true },
+        credit_id:  { type: String, required: true, unique: true },
         name:  { type: String},
         gender: {type: String},
       }
@@ -101,3 +101,5 @@ const tvShowSchema = new Schema({
 tvShowSchema.statics.findBytvShowById = function (id) {
   return this.findOne({ id: id });
 };
+
+export default mongoose.model('Tv Show', tvShowSchema);

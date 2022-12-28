@@ -3,6 +3,8 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import moviesRouter from './api/movies';
 import usersRouter from './api/users/';
+import tvShowRouter from './api/tvShows';
+import peopleRouter from './api/People';
 import genresRouter from './api/genres/';
 import passport from './api/authenticate';
 import './api/db';
@@ -25,6 +27,8 @@ app.use(passport.initialize());
 app.use(bodyParser.json());
 //update /api/Movie route
 app.use('/api/movies', passport.authenticate('jwt', {session: false}), moviesRouter);
+app.use('/api/people',  passport.authenticate('jwt', {session: false}), peopleRouter);
+app.use('/api/tvshow',  passport.authenticate('jwt', {session: false}), tvShowRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/genres', genresRouter);
 app.use(errHandler);

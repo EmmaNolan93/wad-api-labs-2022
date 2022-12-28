@@ -1,12 +1,14 @@
 import userModel from '../users/userModel';
 import genresModel from '../genres/genresModel';
 import peopleModel from '../People/peopleModel';
+import tvShowModel from '../tvShows/tvShowModel';
 import users from './users';
 import dotenv from 'dotenv';
 import genres from "./genres";
 import movieModel from '../movies/movieModel';
 import movies from './movies.js';
 import people from './poeple';
+import tvShow from './tvShows';
 
 
 dotenv.config();
@@ -22,7 +24,7 @@ async function loadUsers() {
     console.error(`failed to Load user Data: ${err}`);
   }
 }
-// deletes all user documents in collection and inserts test data
+// deletes all People documents in collection and inserts test data
 async function loadPeople() {
   console.log('load people Data');
   try {
@@ -31,6 +33,17 @@ async function loadPeople() {
     console.info(`${people.length} People were successfully stored.`);
   } catch (err) {
     console.error(`failed to Load People Data: ${err}`);
+  }
+}
+// deletes all Tv Shows documents in collection and inserts test data
+async function loadTvShow() {
+  console.log('load Tv Shows Data');
+  try {
+    await tvShowModel.deleteMany();
+    await tvShow.forEach(user => tvShowModel.create(user));
+    console.info(`${tvShow.length} Tv Shows were successfully stored.`);
+  } catch (err) {
+    console.error(`failed to Load tv Show Data: ${err}`);
   }
 }
 async function loadGenres() {
@@ -60,4 +73,5 @@ if (process.env.SEED_DB) {
   loadGenres();
   loadMovies();//ADD THIS LINE
   loadPeople();
+  loadTvShow();
 }
