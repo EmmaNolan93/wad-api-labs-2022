@@ -1,9 +1,12 @@
 import express from 'express';
 import {getUpcomingMovies} from '../tmdb-api';
+import { getTvShows } from '../tmdb-api';
+import { getPopPerson } from '../tmdb-api';
 import uniqid from 'uniqid';
 import movieModel from './movieModel';
 import asyncHandler from 'express-async-handler';
 import { movieReviews} from './moviesData';
+import { getMovieReviews } from '../tmdb-api';
 
 const router = express.Router(); 
 router.get('/', asyncHandler(async (req, res) => {
@@ -62,5 +65,27 @@ router.post('/:id/reviews', (req, res) => {
 router.get('/tmdb/upcoming', asyncHandler( async(req, res) => {
     const upcomingMovies = await getUpcomingMovies();
     res.status(200).json(upcomingMovies);
+  }));
+  router.get('/tmdb/tvshows', asyncHandler( async(req, res) => {
+    const upcomingMovies = await getTvShows();
+    res.status(200).json(upcomingMovies);
+  }));
+  router.get('/tmdb/Person', asyncHandler( async(req, res) => {
+    const upcomingMovies = await getPopPerson();
+    res.status(200).json(upcomingMovies);
+  }));
+  router.get('/tmdb/:id/credits', asyncHandler( async(req, res) => {
+    const id = parseInt(req.params.id);
+    console.log(id);
+    const upcomingMovies = await getMovieReviews(id);
+    if(upcomingMovies){
+    res.status(200).json(upcomingMovies);
+    }
+    else {
+        res.status(404).json({
+            message: 'The resource you requested could not be found.',
+            status_code: 404
+        });
+    }
   }));
 export default router;

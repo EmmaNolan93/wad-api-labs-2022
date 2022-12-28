@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import MovieProvider from "./moviesContext";
+import MovieProvider from "./movieContext";
 import SignUpPage from "./signUpPage";
 import { BrowserRouter, Route, Redirect, Switch, Link } from "react-router-dom";
 import { PublicPage, Movies, Profile, HomePage } from "./pages";

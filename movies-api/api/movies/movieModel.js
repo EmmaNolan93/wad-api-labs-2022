@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+
 const Schema = mongoose.Schema;
 
 
@@ -34,6 +35,10 @@ const MovieSchema = new Schema({
 MovieSchema.statics.findByMovieDBId = function (id) {
   return this.findOne({ id: id });
 };
+
+
+
+
 
 export default mongoose.model('Movies', MovieSchema);
 
