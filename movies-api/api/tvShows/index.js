@@ -4,7 +4,7 @@ import tvShowModel from './tvShowModel';
 import asyncHandler from 'express-async-handler';
 
 const router = express.Router(); 
-router.get('/', asyncHandler(async (req, res) => {
+/*router.get('/', asyncHandler(async (req, res) => {
     let { page = 1, limit = 10 } = req.query; // destructure page and limit and set default values
     [page, limit] = [+page, +limit]; //trick to convert to numeric (req.query will contain string values)
 
@@ -17,7 +17,13 @@ router.get('/', asyncHandler(async (req, res) => {
     const returnObject = { page: page, total_pages: Math.ceil(totalDocuments / limit), total_results: totalDocuments, results: movies };//construct return Object and insert into response object
 
     res.status(200).json(returnObject);
-}));
+}));*/
+
+router.get('/', async (req, res) => {
+  const genres = await tvShowModel.find();
+  res.status(200).json(genres);
+});
+
 // Get movie details
 router.get('/:id', asyncHandler(async (req, res) => {
     const id = parseInt(req.params.id);

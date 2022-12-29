@@ -27,8 +27,8 @@ app.use(passport.initialize());
 app.use(bodyParser.json());
 //update /api/Movie route
 app.use('/api/movies', passport.authenticate('jwt', {session: false}), moviesRouter);
-app.use('/api/people',  passport.authenticate('jwt', {session: false}), peopleRouter);
-app.use('/api/tvshow',  passport.authenticate('jwt', {session: false}), tvShowRouter);
+app.use('/api/people', passport.authenticate('jwt', {session: false}), peopleRouter);
+app.use('/api/tvshow', passport.authenticate('jwt', {session: false}), tvShowRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/genres', genresRouter);
 app.use(errHandler);
