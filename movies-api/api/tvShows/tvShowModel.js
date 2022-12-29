@@ -33,7 +33,7 @@ const tvShowSchema = new Schema({
     last_episode_to_air: {
       air_date: {type: String},
       episode_number: {type: Number},
-      id: { type: Number, required: true, unique: true },
+      id: { type: Number},
       name: {type: String},
       overview: {type: String},
       production_code: {type: String},
