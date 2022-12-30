@@ -4,8 +4,13 @@ import peopleModel from './peopleModel';
 import asyncHandler from 'express-async-handler';
 
 const router = express.Router(); 
-router.get('/', asyncHandler(async (req, res) => {
-    let { page = 1, limit = 10 } = req.query; // destructure page and limit and set default values
+// Get all  genres
+router.get('/', async (req, res) => {
+  const genres = await peopleModel.find();
+  res.status(200).json(genres);
+});
+router.get('/limit/:limit', asyncHandler(async (req, res) => {
+    let { page = 1, limit = req.params.limit} = req.query; // destructure page and limit and set default values
     [page, limit] = [+page, +limit]; //trick to convert to numeric (req.query will contain string values)
 
     const totalDocumentsPromise = peopleModel.estimatedDocumentCount(); //Kick off async calls
