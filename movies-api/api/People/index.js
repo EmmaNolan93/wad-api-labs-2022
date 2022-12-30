@@ -18,7 +18,7 @@ router.get('/', asyncHandler(async (req, res) => {
 
     res.status(200).json(returnObject);
 }));
-// Get movie details
+// Get a specific person 
 router.get('/:id', asyncHandler(async (req, res) => {
     const id = parseInt(req.params.id);
     const people = await peopleModel.findByPeopleById(id);

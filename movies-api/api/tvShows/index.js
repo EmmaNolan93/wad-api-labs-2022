@@ -4,6 +4,7 @@ import tvShowModel from './tvShowModel';
 import asyncHandler from 'express-async-handler';
 
 const router = express.Router(); 
+//gets all tv shows from mongo db
 router.get('/', asyncHandler(async (req, res) => {
     let { page = 1, limit = 10 } = req.query; // destructure page and limit and set default values
     [page, limit] = [+page, +limit]; //trick to convert to numeric (req.query will contain string values)
@@ -20,7 +21,7 @@ router.get('/', asyncHandler(async (req, res) => {
 }));
 
 
-// Get tv show  details
+// Get a specific tv show form mongo db
 router.get('/:id', asyncHandler(async (req, res) => {
     const id = parseInt(req.params.id);
     const movie = await tvShowModel.findBytvShowById(id);
@@ -30,6 +31,8 @@ router.get('/:id', asyncHandler(async (req, res) => {
         res.status(404).json({message: 'The resource you requested could not be found.', status_code: 404});
     }
 }));
+
+// get tmdb tv shows 
   router.get('/tmdb/tvshows', asyncHandler( async(req, res) => {
     const upcomingMovies = await getTvShows();
     res.status(200).json(upcomingMovies);
