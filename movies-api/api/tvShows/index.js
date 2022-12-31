@@ -2,6 +2,9 @@ import express from 'express';
 import { getTvShows } from '../tmdb-api';
 import tvShowModel from './tvShowModel';
 import asyncHandler from 'express-async-handler';
+import { genres } from './tvShowData';
+import { tvReview } from './tvShowData';
+
 
 const router = express.Router(); 
 //gets all tv shows from mongo db
@@ -19,8 +22,55 @@ router.get('/', asyncHandler(async (req, res) => {
 
     res.status(200).json(returnObject);
 }));
+// get all tv show reviews ( I only have a review for one of the tv shows game of thrones)
+router.get('/reviews', async (req, res) => {
+  res.status(200).json(tvReview);
+});
+// Get a specific tv show reviews
+router.get('/:id/reviews', (req, res) => {
+  const id = parseInt(req.params.id);
+  const tvreviews = tvReview.find((review) => review.id== id);
+  // find reviews in list
+  if (tvreviews) {
+      res.status(200).json(tvreviews);
+  } else {
+      res.status(404).json({
+          message: 'The resource you requested could not be found.',
+          status_code: 404
+      });
+  }
+});
+// get tv show  by genere 
+router.get('/genre/:name', asyncHandler(async (req, res) => {
+  const name = req.params.name;
+  const tvshows = genres.genres.find((genre) => genre.name== name);
+  const id = parseInt(tvshows.id);
+  const movie =  await tvShowModel.findByTvShowGenreDBId(id);
+  if (movie) {
+      res.status(200).json(movie);
+  } else {
+      res.status(404).json({
+          message: 'The resource you requested could not be found.',
+          status_code: 404
+      });
+  }
+}));
 
+// get tv show  limit 
+router.get('/limit/:limit', asyncHandler(async (req, res) => {
+  let { page = 1, limit = parseInt(req.params.limit) } = req.query; // destructure page and limit and set default values
+  [page, limit] = [+page, +limit]; //trick to convert to numeric (req.query will contain string values)
 
+  const totalDocumentsPromise = tvShowModel.estimatedDocumentCount(); //Kick off async calls
+  const tvshowPromise = tvShowModel.find().limit(limit);
+
+  const totalDocuments = await totalDocumentsPromise; //wait for the above promises to be fulfilled
+  const tvshpw = await tvshowPromise;
+
+  const returnObject = { page: page, total_pages: Math.ceil(totalDocuments / limit), total_results: totalDocuments, results: tvshpw };//construct return Object and insert into response object
+
+  res.status(200).json(returnObject);
+}));
 // Get a specific tv show form mongo db
 router.get('/:id', asyncHandler(async (req, res) => {
     const id = parseInt(req.params.id);

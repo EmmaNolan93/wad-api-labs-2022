@@ -27,7 +27,19 @@ export const peopleDetail = [
     "homepage": null
   }
 ];
-
+export const peopleRating = [
+    {
+    "id": 1399,
+    "page": 1,
+    "results": [
+      {
+        "name": "lmao7",
+        "username": "lmao7",
+        "rating": 9
+      }
+    ]
+  }
+  ];
 const people = [
   {
 "adult": false,

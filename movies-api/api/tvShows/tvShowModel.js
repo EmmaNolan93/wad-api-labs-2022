@@ -101,5 +101,8 @@ const tvShowSchema = new Schema({
 tvShowSchema.statics.findBytvShowById = function (id) {
   return this.findOne({ id: id });
 };
+tvShowSchema.statics.findByTvShowGenreDBId = function (id) {
+  return this.find({"genres.id": id});
+};
 
 export default mongoose.model('Tv Show', tvShowSchema);

@@ -9,12 +9,19 @@ import { movieDetails } from './moviesData';
 import { genres } from './moviesData';
 
 const router = express.Router(); 
-router.get('/', asyncHandler(async (req, res) => {
-    let { page = 1, limit = 10 } = req.query; // destructure page and limit and set default values
+
+// get all movies
+router.get('/', async (req, res) => {
+    const movies = await movieModel.find();
+    res.status(200).json(movies);
+});
+// get Movie limit 
+router.get('/limit/:limit', asyncHandler(async (req, res) => {
+    let { page = 1, limit = parseInt(req.params.limit) } = req.query; // destructure page and limit and set default values
     [page, limit] = [+page, +limit]; //trick to convert to numeric (req.query will contain string values)
 
     const totalDocumentsPromise = movieModel.estimatedDocumentCount(); //Kick off async calls
-    const moviesPromise = movieModel.find().limit(limit).skip((page - 1) * limit);
+    const moviesPromise = movieModel.find().limit(limit);
 
     const totalDocuments = await totalDocumentsPromise; //wait for the above promises to be fulfilled
     const movies = await moviesPromise;
@@ -52,7 +59,7 @@ router.get('/genre/:name', asyncHandler(async (req, res) => {
     const movies = genres.genres.find((genre) => genre.name== name);
     const id = parseInt(movies.id);
     const movie =  await movieModel.findByMovieGenreDBId(id);
-    if (movies.name == name) {
+    if (movie) {
         res.status(200).json(movie);
     } else {
         res.status(404).json({
