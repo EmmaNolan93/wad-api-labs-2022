@@ -29,7 +29,7 @@ async function loadPeople() {
   console.log('load people Data');
   try {
     await peopleModel.deleteMany();
-    await people.forEach(user => peopleModel.create(user));
+    await people.forEach(people => peopleModel.create(people));
     console.info(`${people.length} People were successfully stored.`);
   } catch (err) {
     console.error(`failed to Load People Data: ${err}`);

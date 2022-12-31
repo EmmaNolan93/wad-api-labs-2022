@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 
 const PeopleSchema = new Schema({
     birthday: { type: String },
-    id: { type: Number, required: true, unique: true },
+    id: { type: Number, required: true, unique: true},
     profile_path: { type: String },
     known_for: [
       {
@@ -16,7 +16,7 @@ const PeopleSchema = new Schema({
         release_date: {type: String},
         original_title: {type: String},
         genre_ids: [{type: Number}],
-        id: { type: Number, required: true, unique: true },
+        id: { type: Number, required: true},
         media_type: {type: String},
         original_language: {type: String},
         title: {type: String},

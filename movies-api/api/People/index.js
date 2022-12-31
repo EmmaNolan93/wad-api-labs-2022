@@ -4,11 +4,12 @@ import peopleModel from './peopleModel';
 import asyncHandler from 'express-async-handler';
 
 const router = express.Router(); 
-// Get all  genres
+// Get all  Pop Poeple
 router.get('/', async (req, res) => {
   const genres = await peopleModel.find();
   res.status(200).json(genres);
 });
+// Set a limit to the amount of Data returned 
 router.get('/limit/:limit', asyncHandler(async (req, res) => {
     let { page = 1, limit = req.params.limit} = req.query; // destructure page and limit and set default values
     [page, limit] = [+page, +limit]; //trick to convert to numeric (req.query will contain string values)
@@ -34,6 +35,7 @@ router.get('/:id', asyncHandler(async (req, res) => {
     }
 }));
 
+// get pop people form the tmdb api
   router.get('/tmdb/Person', asyncHandler( async(req, res) => {
     const upcomingMovies = await getPopPerson();
     res.status(200).json(upcomingMovies);
