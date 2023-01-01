@@ -29,7 +29,7 @@ export const peopleDetail = [
 ];
 export const peopleRating = [
     {
-    "id": 1399,
+    "id": 2359226,
     "page": 1,
     "results": [
       {

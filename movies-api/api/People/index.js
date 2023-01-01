@@ -2,6 +2,8 @@ import express from 'express';
 import { getPopPerson } from '../tmdb-api';
 import peopleModel from './peopleModel';
 import asyncHandler from 'express-async-handler';
+import { peopleRating } from './peopleData';
+import uniqid from 'uniqid';
 
 const router = express.Router(); 
 // Get all  Pop Poeple
@@ -34,6 +36,37 @@ router.get('/:id', asyncHandler(async (req, res) => {
         res.status(404).json({message: 'The resource you requested could not be found.', status_code: 404});
     }
 }));
+
+//Post a people  rating
+router.post('/:id/rating', (req, res) => {
+  const id = parseInt(req.params.id);
+  const peopleRatings = peopleRating.find((rate) => rate.id== id);
+  if (peopleRatings) {
+      req.body.id = uniqid();
+      peopleRatings.results.push(req.body); 
+      res.status(200).json(req.body);
+  } else {
+      res.status(404).json({
+          message: 'The resource you requested could not be found.',
+          status_code: 404
+      });
+  }
+});
+
+// Get a specific people rating
+router.get('/:id/rating', (req, res) => {
+  const id = parseInt(req.params.id);
+  const peopleRatings = peopleRating.find((rate) => rate.id== id);
+  // find reviews in list
+  if (peopleRatings) {
+      res.status(200).json(peopleRatings);
+  } else {
+      res.status(404).json({
+          message: 'The resource you requested could not be found.',
+          status_code: 404
+      });
+  }
+});
 
 // get pop people form the tmdb api
   router.get('/tmdb/Person', asyncHandler( async(req, res) => {

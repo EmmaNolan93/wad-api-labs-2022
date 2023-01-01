@@ -4,6 +4,8 @@ import asyncHandler from 'express-async-handler';
 import jwt from 'jsonwebtoken';
 const router = express.Router(); // eslint-disable-line
 import movieModel from '../movies/movieModel';
+import tvShowModel from '../tvShows/tvShowModel';
+import peopleModel from '../People/peopleModel';
 
 // Get all users
 router.get('/', async (req, res) => {
@@ -40,41 +42,92 @@ router.post('/',asyncHandler( async (req, res, next) => {
         });
       }
   }));
-//Add a favourite. No Error Handling Yet. Can add duplicates too!
-router.post('/:userName/favourites', asyncHandler(async (req, res) => {
-    var index = 0;
-    const newFavourite = req.body.id;
+//Add a favouritetvShow. No Error Handling Yet. Can add duplicates too!
+router.post('/:userName/favouritetvshows', asyncHandler(async (req, res) => {
+  const newFavourite = req.body.id;
+  const id = parseInt(newFavourite);
+  const userName = req.params.userName;
+  const tvshow = await tvShowModel.findBytvShowById(id);
+  if(tvshow){
+  const user = await User.findByUserName(userName);
+  if(user){
+  await user.favouriteTvShow.push(tvshow._id);
+  await user.save(); 
+  res.status(201).json(user); 
+  } else{
+    res.status(401).json({success: false, msg: 'Authentication failed. no such user exists.'});
+  }
+  }else{
+    res.status(401).json({success: false, msg: ' No such tv show excists.'});
+  }
+}));
+//Add a favouriteMovies. No Error Handling Yet. Can add duplicates too!
+router.post('/:userName/favouritemovies', asyncHandler(async (req, res) => {
+  const newFavourite = req.body.id;
+  const userName = req.params.userName;
+  const movie = await movieModel.findByMovieDBId(newFavourite);
+  if(movie){
+  const user = await User.findByUserName(userName);
+  if(user){
+  await user.favouriteMovies.push(movie._id);
+  await user.save(); 
+  res.status(201).json(user); 
+  } else{
+    res.status(401).json({success: false, msg: 'Authentication failed. no such user exists.'});
+  }
+  }else{
+    res.status(401).json({success: false, msg: ' No such movie excists.'});
+  }
+}));
+//Add a favouritePeople. No Error Handling Yet. Can add duplicates too!
+router.post('/:userName/favouritepeople', asyncHandler(async (req, res) => {
+  const newFavourite = req.body.id;
+  const id = parseInt(newFavourite);
+  const userName = req.params.userName;
+  const people = await peopleModel.findByPeopleById(id);
+  if(people){
+  const user = await User.findByUserName(userName);
+  if(user){
+  await user.favouritePeople.push(people._id);
+  await user.save(); 
+  res.status(201).json(user); 
+  } else{
+    res.status(401).json({success: false, msg: 'Authentication failed. no such user exists.'});
+  }
+  }else{
+    res.status(401).json({success: false, msg: ' No such person excists.'});
+  }
+}));
+router.get('/:userName/favouritemovies', asyncHandler( async (req, res) => {
     const userName = req.params.userName;
-    const movie = await movieModel.findByMovieDBId(newFavourite);
-    const user = await User.findByUserName(userName);
-    var ans = true;
-    if(user.favourites.length > 0){
-    while(user.favourites.length > index && user.favourites[index]._id  != movie._id ){
-        if(user.favourites[index]._id == movie._id ){
-            ans = false;
-            console.log(ans);
-        }
-          index++;
+    const user = await User.findByUserName(userName).populate('favouriteMovies');
+    if(user){
+    res.status(200).json(user.favouriteMovies);
     }
-    if(ans){
-        await user.favourites.push(movie._id);
-        await user.save(); 
-        res.status(201).json(user);
-    } else{
-        res.status(401).json({success: false,msg: 'Authentication failed. Wrong password.'});
+    else{
+      res.status(401).json({success: false, msg: ' No such users excists.'});
     }
-}else{
-    await user.favourites.push(movie._id);
-        await user.save(); 
-        res.status(201).json(user);
-}
   }));
 
-  router.get('/:userName/favourites', asyncHandler( async (req, res) => {
+  router.get('/:userName/favouritepeople', asyncHandler( async (req, res) => {
     const userName = req.params.userName;
-    const user = await User.findByUserName(userName).populate('favourites');
-    res.status(200).json(user.favourites);
-    console.log(user.favourites[0]._id);
+    const user = await User.findByUserName(userName).populate('favouritePeople');
+    if(user){
+    res.status(200).json(user.favouritePeople);
+    }
+    else{
+      res.status(401).json({success: false, msg: ' No such users excists.'});
+    }
+  }));
+
+  router.get('/:userName/favouritetvshow', asyncHandler( async (req, res) => {
+    const userName = req.params.userName;
+    const user = await User.findByUserName(userName).populate('favouriteTvShow');
+    if(user){
+    res.status(200).json(user.favouriteTvShow);
+    }else{
+    res.status(401).json({success: false, msg: ' No such users excists.'});
+    }
   }));
 
 export default router;
