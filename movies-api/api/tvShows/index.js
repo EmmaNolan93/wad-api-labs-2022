@@ -1,10 +1,12 @@
 import express from 'express';
 import { getTvShows } from '../tmdb-api';
 import tvShowModel from './tvShowModel';
+import uniqid from 'uniqid';
 import asyncHandler from 'express-async-handler';
 import { genres } from './tvShowData';
 import { tvReview } from './tvShowData';
-
+import { tvshowCredits } from './tvShowData';
+import { tvRating } from './tvShowData';
 
 const router = express.Router(); 
 //gets all tv shows from mongo db
@@ -40,6 +42,56 @@ router.get('/:id/reviews', (req, res) => {
       });
   }
 });
+
+// Get a specific tv show rating
+router.get('/:id/rating', (req, res) => {
+  const id = parseInt(req.params.id);
+  const tvRatings = tvRating.find((rate) => rate.id== id);
+  // find reviews in list
+  if (tvRatings) {
+      res.status(200).json(tvRatings);
+  } else {
+      res.status(404).json({
+          message: 'The resource you requested could not be found.',
+          status_code: 404
+      });
+  }
+});
+
+//Post a tv show reviews 
+router.post('/:id/reviews', (req, res) => {
+  const id = parseInt(req.params.id);
+  const tvreviews = tvReview.find((review) => review.id== id);
+  if (tvreviews) {
+      req.body.created_at = new Date();
+      req.body.updated_at = new Date();
+      req.body.id = uniqid();
+      tvreviews.results.push(req.body); //push the new review onto the list
+      res.status(200).json(req.body);
+  } else {
+      res.status(404).json({
+          message: 'The resource you requested could not be found.',
+          status_code: 404
+      });
+  }
+});
+
+//Post a tv show rating
+router.post('/:id/rating', (req, res) => {
+  const id = parseInt(req.params.id);
+  const tvRatings = tvRating.find((rate) => rate.id== id);
+  if (tvRatings) {
+      req.body.id = uniqid();
+      tvRatings.results.push(req.body); 
+      res.status(200).json(req.body);
+  } else {
+      res.status(404).json({
+          message: 'The resource you requested could not be found.',
+          status_code: 404
+      });
+  }
+});
+
 // get tv show  by genere 
 router.get('/genre/:name', asyncHandler(async (req, res) => {
   const name = req.params.name;
@@ -48,6 +100,20 @@ router.get('/genre/:name', asyncHandler(async (req, res) => {
   const movie =  await tvShowModel.findByTvShowGenreDBId(id);
   if (movie) {
       res.status(200).json(movie);
+  } else {
+      res.status(404).json({
+          message: 'The resource you requested could not be found.',
+          status_code: 404
+      });
+  }
+}));
+
+// get tv show credits
+router.get('/credits/:id', asyncHandler(async (req, res) => {
+  const id = parseInt(req.params.id);
+  const tvshows = tvshowCredits.find((genre) => genre.id== id);
+  if (tvshows) {
+      res.status(200).json(tvshows);
   } else {
       res.status(404).json({
           message: 'The resource you requested could not be found.',
