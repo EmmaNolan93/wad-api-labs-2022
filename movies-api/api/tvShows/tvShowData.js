@@ -259,7 +259,7 @@ export const tvReview = [
     "total_pages": 1,
     "total_results": 7
   }
-]
+];
 const tvShowDetails = [
     {
         "backdrop_path": "/suopoADq0k8YZr4dQXcU6pToj6s.jpg",

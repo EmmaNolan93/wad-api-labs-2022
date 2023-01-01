@@ -49,7 +49,7 @@ router.get('/:id/rating', (req, res) => {
   const tvRatings = tvRating.find((rate) => rate.id== id);
   // find reviews in list
   if (tvRatings) {
-      res.status(200).json(tvRatings);
+      res.status(200).json(tvRating);
   } else {
       res.status(404).json({
           message: 'The resource you requested could not be found.',
@@ -61,6 +61,7 @@ router.get('/:id/rating', (req, res) => {
 //Post a tv show reviews 
 router.post('/:id/reviews', (req, res) => {
   const id = parseInt(req.params.id);
+  if(id >= 0 && id <=10){
   const tvreviews = tvReview.find((review) => review.id== id);
   if (tvreviews) {
       req.body.created_at = new Date();
@@ -74,15 +75,18 @@ router.post('/:id/reviews', (req, res) => {
           status_code: 404
       });
   }
+}
 });
 
 //Post a tv show rating
 router.post('/:id/rating', (req, res) => {
   const id = parseInt(req.params.id);
+  const rate = req.body.rating;
+  if( rate >= 0 && rate <=10){
   const tvRatings = tvRating.find((rate) => rate.id== id);
   if (tvRatings) {
       req.body.id = uniqid();
-      tvRatings.results.push(req.body); 
+      tvRatings.results.push(req.body); //push the new review onto the list
       res.status(200).json(req.body);
   } else {
       res.status(404).json({
@@ -90,6 +94,13 @@ router.post('/:id/rating', (req, res) => {
           status_code: 404
       });
   }
+}
+else{
+  res.status(404).json({
+    message: 'Please enter a rating that is below 10 and higher than 0',
+    status_code: 404
+});
+}
 });
 
 // get tv show  by genere 

@@ -40,6 +40,8 @@ router.get('/:id', asyncHandler(async (req, res) => {
 //Post a people  rating
 router.post('/:id/rating', (req, res) => {
   const id = parseInt(req.params.id);
+  const rate = req.body.rating;
+  if( rate >= 0 && rate <= 10){
   const peopleRatings = peopleRating.find((rate) => rate.id== id);
   if (peopleRatings) {
       req.body.id = uniqid();
@@ -51,6 +53,13 @@ router.post('/:id/rating', (req, res) => {
           status_code: 404
       });
   }
+}
+else{
+  res.status(404).json({
+    message: 'Please enter a value that is above 0 and below 10',
+    status_code: 404
+});
+}
 });
 
 // Get a specific people rating
