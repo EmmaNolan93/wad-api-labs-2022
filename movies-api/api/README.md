@@ -95,12 +95,10 @@ Give an overview of your web API design, perhaps similar to the following:
 | /api/movies/:id/details |Get movie details | N/A | N/A |
 | /api/movies/tmdb/upcoming |Get movies form the tmdb database | N/A | N/A |
 | /api/movies/tmdb/:id/credits |Get cast & crew of a movie form the tmdb database | N/A | N/A |
-
 | /api/people/limit/:limit |Gets a number of people based on the limit number entered | N/A | N/A |
 | /api/people | Gets a list of people | N/A | N/A | N/A
 | /api/people/:id | Get a specific person | Create a new review for Movie | N/A | N/A  
 | /api/people/:id/rating |Gets a specifc person ratings | post a rating of a person give that their rating is between 0 and 10 | N/A |
-
 | /api/tvshow |Gets a list of tv shows | N/A | N/A |
 | /api/tvshow/{tvshowid} | Get a tv show | N/A | N/A | N/A
 | /api/tvshow/{tvshowid}/reviews | Get all reviews for tv show | Create a new review for a tv show | N/A | N/A  
@@ -112,7 +110,6 @@ Give an overview of your web API design, perhaps similar to the following:
 
 
 
-If you have your API design on an online platform or graphic, please link to it (e.g. [Swaggerhub](https://app.swaggerhub.com/)).
 
 
 ## Security and Authentication
